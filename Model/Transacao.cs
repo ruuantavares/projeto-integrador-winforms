@@ -21,7 +21,7 @@ public class Transacao
         Valor = valor;
         Descricao = descricao;
         Tipo = tipo;
-        //RepositoryTransacao.Criar(this);
+        RepositoryTransacao.Criar(this);
     }
 
 }

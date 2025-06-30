@@ -5,7 +5,7 @@ namespace Controller;
 
 public class ControllerTransacao
 {
-    public static void Criar(DateTime data, decimal valor, string descricao, TipoTransacao tipo)
+    public static void Registrar(DateTime data, decimal valor, string descricao, TipoTransacao tipo)
     {
         new Transacao(data, valor, descricao, tipo);
     }
