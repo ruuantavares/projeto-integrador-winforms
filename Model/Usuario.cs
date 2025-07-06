@@ -1,3 +1,5 @@
+using Repository;
+
 namespace Model;
 
 public class Usuario
@@ -7,10 +9,16 @@ public class Usuario
     public string Email { get; set; }
     public string SenhaHash { get; set; } // senha criptografado
 
-    public Usuario(string nome, string email, string senhahash)
+
+    public static Usuario CriarComSenhaSegura(string nome, string email, string senha)
+    {
+        return new Usuario(nome, email, RepositoryUsuario.ComputeHash(senha));
+    }
+
+    public Usuario(string nome, string email, string senhaHash)
     {
         Nome = nome;
         Email = email;
-        SenhaHash = senhahash;
+        SenhaHash = senhaHash;
     }
 }

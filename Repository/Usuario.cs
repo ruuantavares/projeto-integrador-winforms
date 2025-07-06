@@ -21,28 +21,31 @@ public static class RepositoryUsuario
     {
         string hash = ComputeHash(senhaPlain); //transforma senha em hash.
         using var conexao = Conexao.Abrir();
-        string queryUpdate = "SELECT id, nome, email, senhash FROM usuarios  email=@Email"; //busca usuario com o email
+        string queryUpdate = "SELECT id, nome, email, senhaHash FROM usuarios WHERE email = @Email"; //busca usuario com o email
         using var command = new MySqlCommand(queryUpdate, conexao);
         command.Parameters.AddWithValue("@Email", email);
+
         using var reader = command.ExecuteReader(); //Compara hash salva e hash gerado.
         if (!reader.Read())//Se diferente retorna null > login falhou.
         {
             return null;
         }
+
         string storedHash = reader.GetString("senhaHash");
         if (storedHash != hash)
         {
             return null;
         }//Se igual: retorna o Usuario com Id.
+
         return new Usuario(
-            reader.GetString("nome"),
-            reader.GetString("email"),
-            storedHash)
+            nome: reader.GetString("nome"),
+            email: reader.GetString("email"),
+            senhaHash: storedHash)
         {
             Id = reader.GetInt32("id")
         };
     }
-    private static string ComputeHash(string input)//Gera hash SHA-256 de forma segura.
+    public static string ComputeHash(string input)//Gera hash SHA-256 de forma segura.
 
 
     {

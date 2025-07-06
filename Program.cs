@@ -1,13 +1,16 @@
-namespace ProjetoIntegrador;
 
 using View;
-using Model;
-static class Program
+
+namespace ProjetoIntegrador
 {
-
-    static void Main()
+    static class Program
     {
-
-        Application.Run(new ViewTransacao());
+        [STAThread]
+        static void Main()
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new ViewLogin()); // Inicia pelo login
+        }
     }
 }
