@@ -38,7 +38,7 @@ public class RepositoryTransacao
         var lista = new List<Transacao>();
 
         using var conexao = Conexao.Abrir(); // Abre a conexão com o banco de dados usando sua classe Conexao.cs e o using var garante que a conexão será fechada automaticamente ao final do escopo
-        string query = "SELECT * FROM transacoes WHERE usuarioId = @UseriD";
+        string query = "SELECT * FROM transacoes WHERE usuarioId = @UserId";
         using var command = new MySqlCommand(query, conexao);
         command.Parameters.AddWithValue("@UserId", usuarioId);
 

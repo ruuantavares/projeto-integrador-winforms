@@ -58,7 +58,8 @@ public class ViewTransacao : Form
         LnkLogout.Click += (s, e) =>
         {
             Hide();
-            new ViewLogin().Show(); // volta para tela de login
+            new ViewLogin().ShowDialog(); // volta para tela de login
+            Close();
         };
 
 
@@ -224,6 +225,13 @@ public class ViewTransacao : Form
         Transacao novaTransacao = new Transacao(data, valor, descricao, tipo, usuarioLogado.Id, categoria);
         ControllerTransacao.Registrar(novaTransacao);
         MessageBox.Show("Transação registrada com sucesso.");
+
+        // Limpa os campos após cadastro
+        InpDescricao.Text = "";
+        InpValor.Text = "";
+        InpCategoria.SelectedIndex = -1;
+        InpTipo.SelectedIndex = -1;
+
         Listar();
     }
     private void Alterar(object? sender, EventArgs e)
@@ -250,8 +258,14 @@ public class ViewTransacao : Form
         //Usa a data atual 
         DateTime data = DateTime.Now;
 
-        var novaTransacao = new Transacao(data, valor, descricao, tipo, usuarioLogado.Id, categoria);
+        Transacao novaTransacao = new(data, valor, descricao, tipo, usuarioLogado.Id, categoria);
         ControllerTransacao.Alterar(id, data, valor, descricao, categoria, tipo);
+
+        InpDescricao.Text = "";
+        InpValor.Text = "";
+        InpCategoria.SelectedIndex = -1;
+        InpTipo.SelectedIndex = -1;
+
         Listar();
     }
     private void Deletar(object? sender, EventArgs e)

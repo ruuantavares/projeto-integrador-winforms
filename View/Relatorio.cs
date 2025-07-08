@@ -18,7 +18,7 @@ public class ViewRelatorio : Form
         telaAnterior = telaPrincipal;
 
         Text = "Relatório Completo";//Define o título da janela, o tamanho e o centro da tela.
-        Size = new Size(700, 450);
+        Size = new Size(700, 500);
         StartPosition = FormStartPosition.CenterParent;
 
         DgvTodos = new DataGridView
@@ -49,13 +49,12 @@ public class ViewRelatorio : Form
         BtnVoltar = new Button //Adiciona um botão que fecha a janela
         {
             Text = "Voltar",
-            Dock = DockStyle.Bottom,
-            Height = 40
+            Location = new Point(600, 400)
         };
         BtnVoltar.Click += (s, e) =>
         {
-              telaAnterior.Show(); // Reexibe a tela de transações
-              Close();        // Fecha a tela de relatório
+            telaAnterior.Show(); // Reexibe a tela de transações
+            Close();        // Fecha a tela de relatório
         };
 
 
