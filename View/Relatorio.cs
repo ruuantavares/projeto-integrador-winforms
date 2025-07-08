@@ -5,15 +5,17 @@ namespace View;
 public class ViewRelatorio : Form
 {
     private readonly Usuario usuarioLogado; //Guarda quem esta usando o sistema atualmente.Isso será passado ao abrir o relatório new ViewRelatorio(usuarioLogado)
+    private readonly Form telaAnterior;
     private readonly DataGridView DgvTodos;
     private readonly Label LblEntrada;
     private readonly Label LblSaida;
     private readonly Label LblSaldo;
     private readonly Button BtnVoltar;
 
-    public ViewRelatorio(Usuario usuario) //Construtor da janela,Recebe o usuário logado para filtrar os dados corretamente.
+    public ViewRelatorio(Usuario usuario, Form telaPrincipal) //Construtor da janela,Recebe o usuário logado para filtrar os dados corretamente.
     {
         usuarioLogado = usuario; //Salva o usuário recebido no campo interno da classe.
+        telaAnterior = telaPrincipal;
 
         Text = "Relatório Completo";//Define o título da janela, o tamanho e o centro da tela.
         Size = new Size(700, 450);
@@ -50,7 +52,12 @@ public class ViewRelatorio : Form
             Dock = DockStyle.Bottom,
             Height = 40
         };
-        BtnVoltar.Click += (s, e) => Close();
+        BtnVoltar.Click += (s, e) =>
+        {
+              telaAnterior.Show(); // Reexibe a tela de transações
+              Close();        // Fecha a tela de relatório
+        };
+
 
         Controls.Add(LblEntrada);
         Controls.Add(LblSaida);

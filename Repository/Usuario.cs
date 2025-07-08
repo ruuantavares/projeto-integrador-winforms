@@ -55,4 +55,16 @@ public static class RepositoryUsuario
         foreach (byte b in bytes) stringBuilder.Append(b.ToString("x2")); //Converte bytes em string hexadecimal (x2).
         return stringBuilder.ToString();
     }
+    public static void Atualizar(Usuario usuario)
+    {
+        using var conexao = Conexao.Abrir();
+        string query = "UPDATE usuarios SET nome = @Nome, email = @Email, senhaHash = @SenhaHash WHERE id = @Id";
+        using var command = new MySqlCommand(query, conexao);
+        command.Parameters.AddWithValue("@Nome", usuario.Nome);
+        command.Parameters.AddWithValue("@Email", usuario.Email);
+        command.Parameters.AddWithValue("@SenhaHash", usuario.SenhaHash);
+        command.Parameters.AddWithValue("@Id", usuario.Id);
+        command.ExecuteNonQuery();
+    }
+
 }

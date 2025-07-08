@@ -5,6 +5,9 @@ namespace View;
 public class ViewTransacao : Form
 {
     private readonly Usuario usuarioLogado;
+    private readonly Label LblBoasVindas;
+    private readonly LinkLabel LnkEditarConta;
+    private readonly LinkLabel LnkLogout;
     private readonly Label LblDescricao;
     private readonly TextBox InpDescricao;
     private readonly Label LblCategoria;
@@ -23,28 +26,61 @@ public class ViewTransacao : Form
     {
         usuarioLogado = usuario;
 
-        Size = new Size(400, 400);
+        Size = new Size(460, 420);
         StartPosition = FormStartPosition.CenterScreen;
+
+        LblBoasVindas = new Label
+        {   //Cria um Label com a mensagem de boas-vindas usando o nome do usuário logado
+            Text = $"Bem-vindo, {usuarioLogado.Nome}!",
+            Location = new Point(20, 20),
+            AutoSize = true, //faz o label ajustar sua largura ao texto.
+            Font = new Font("Segoe UI", 10, FontStyle.Bold) //Usa uma fonte maior e em negrito.
+        };
+
+        LnkEditarConta = new LinkLabel
+        {   //Um link chamado "Editar Conta", que será clicável.
+            Text = "Editar Conta",
+            Location = new Point(250, 20),
+            AutoSize = true
+        };
+        LnkEditarConta.Click += (s, e) =>
+        {   //Quando clicado, esconde a tela atual com Hide() e abre a nova tela ViewEditarConta.
+            Hide();
+            new ViewEditarConta(usuarioLogado, this).ShowDialog();//Passa o usuarioLogado para pré-preencher os dados, e this para poder voltar à tela depois.
+        };
+
+        LnkLogout = new LinkLabel
+        {   // um link de sair(logout)
+            Text = "Sair",
+            Location = new Point(350, 20),
+            AutoSize = true
+        };
+        LnkLogout.Click += (s, e) =>
+        {
+            Hide();
+            new ViewLogin().Show(); // volta para tela de login
+        };
+
 
         LblDescricao = new Label
         {
             Text = "Descrição: ",
-            Location = new Point(50, 50)
+            Location = new Point(50, 110)
         };
         InpDescricao = new TextBox
         {
             Text = "",
-            Location = new Point(150, 50),
+            Location = new Point(150, 110),
             Size = new Size(200, 20)
         };
         LblCategoria = new Label
         {
             Text = "Categoria",
-            Location = new Point(50, 180)
+            Location = new Point(50, 170)
         };
         InpCategoria = new ComboBox
         {
-            Location = new Point(150, 180),
+            Location = new Point(150, 170),
             Size = new Size(200, 20),
             DropDownStyle = ComboBoxStyle.DropDownList
         };
@@ -59,22 +95,22 @@ public class ViewTransacao : Form
         LblValor = new Label
         {
             Text = "Valor: ",
-            Location = new Point(50, 100)
+            Location = new Point(50, 140)
         };
         InpValor = new TextBox
         {
             Text = "",
-            Location = new Point(150, 100),
+            Location = new Point(150, 140),
             Size = new Size(200, 20)
         };
         LblTipo = new Label
         {
             Text = "Tipo: ",
-            Location = new Point(50, 150)
+            Location = new Point(50, 200)
         };
         InpTipo = new ComboBox
         {
-            Location = new Point(150, 150),
+            Location = new Point(150, 200),
             Size = new Size(200, 20),
             DropDownStyle = ComboBoxStyle.DropDownList // Bloqueia para escolher apenas opçoes
         };
@@ -91,33 +127,37 @@ public class ViewTransacao : Form
         BtnAlterar = new Button
         {
             Text = "Alterar",
-            Location = new Point(150, 250)
+            Location = new Point(135, 250)
         };
         BtnAlterar.Click += Alterar;
 
         BtnDeletar = new Button
         {
             Text = "Deletar",
-            Location = new Point(250, 250)
+            Location = new Point(220, 250)
         };
         BtnDeletar.Click += Deletar;
         BtnRelatorio = new Button
         {
             Text = "Relatório",
-            Location = new Point(150, 220)
+            Location = new Point(305, 250)
         };
         BtnRelatorio.Click += (s, e) =>
         {
-            var formRel = new ViewRelatorio(usuarioLogado);
-            formRel.ShowDialog();
+            Hide();
+            var formRel = new ViewRelatorio(usuarioLogado, this).ShowDialog();
+
         };
 
         DgvTransacao = new DataGridView
         {
             Location = new Point(0, 300),
-            Size = new Size(400, 150)
+            Size = new Size(450, 150)
         };
 
+        Controls.Add(LblBoasVindas);
+        Controls.Add(LnkEditarConta);
+        Controls.Add(LnkLogout);
         Controls.Add(LblDescricao);
         Controls.Add(InpDescricao);
         Controls.Add(LblCategoria);
