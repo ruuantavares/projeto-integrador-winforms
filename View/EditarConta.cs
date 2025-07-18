@@ -13,88 +13,119 @@ public class ViewEditarConta : Form
     private readonly Button BtnSalvar;
     private readonly Button BtnVoltar;
 
-
     public ViewEditarConta(Usuario usuarioLogado, Form origem)
     {
         usuario = usuarioLogado;
         telaAnterior = origem;
 
-        StartPosition = FormStartPosition.CenterScreen;
         Text = "Editar Conta";
-        Size = new Size(700, 500);
+        Size = new Size(700, 600);
+        StartPosition = FormStartPosition.CenterScreen;
 
-        int lblWidth = 120;
-        int inputWidth = 180;
-        int startX = 20;
-        int labelY = 20;
-        int spacingY = 40;
+        var titulo = new Label
+        {
+            Text = "Editar Conta",
+            Font = new Font("Segoe UI", 24, FontStyle.Bold),
+            Location = new Point(30, 30),
+            AutoSize = true
+        };
 
-        Label lblNome = new()
+        var groupBox = new GroupBox
+        {
+            Text = "Atualize suas informações",
+            Font = new Font("Segoe UI", 14, FontStyle.Italic),
+            Size = new Size(450, 250),
+            Location = new Point(120, 100),
+            BackColor = Color.LightGray,
+        };
+
+        var lblNome = new Label
         {
             Text = "Nome:",
-            Location = new Point(startX, labelY),
-            Width = lblWidth
+            Location = new Point(30, 50),
+            Font = new Font("Segoe UI", 12),
+            AutoSize = true
         };
         InpNome = new TextBox
         {
-            Location = new Point(startX + lblWidth, labelY),
-            Width = inputWidth
+            Location = new Point(140, 50),
+            Size = new Size(250, 25),
+            BorderStyle = BorderStyle.None,
+            Font = new Font("Segoe UI", 11),
+            Text = usuario.Nome
         };
 
-        Label lblEmail = new()
+        var lblEmail = new Label
         {
             Text = "Email:",
-            Location = new Point(startX, labelY + spacingY),
-            Width = lblWidth
+            Location = new Point(30, 100),
+            Font = new Font("Segoe UI", 12),
+            AutoSize = true
         };
         InpEmail = new TextBox
         {
-            Location = new Point(startX + lblWidth, labelY + spacingY),
-            Width = inputWidth
+            Location = new Point(140, 100),
+            Size = new Size(250, 25),
+            BorderStyle = BorderStyle.None,
+            Font = new Font("Segoe UI", 11),
+            Text = usuario.Email
         };
 
-
-        Label lblSenha = new()
+        var lblSenha = new Label
         {
-            Text = "Senha:",
-            Location = new Point(startX, labelY + spacingY * 2),
-            Width = lblWidth
+            Text = "Nova Senha:",
+            Location = new Point(30, 150),
+            Font = new Font("Segoe UI", 12),
+            AutoSize = true
         };
         InpSenha = new TextBox
         {
-            Location = new Point(startX + lblWidth, labelY + spacingY * 2),
-            Width = inputWidth,
+            Location = new Point(140, 150),
+            Size = new Size(250, 25),
+            BorderStyle = BorderStyle.None,
+            Font = new Font("Segoe UI", 11),
             PasswordChar = '*'
         };
 
         BtnSalvar = new Button
         {
             Text = "Salvar",
-            Location = new Point(100, 150)
+            Location = new Point(170, 370),
+            Size = new Size(100, 40),
+            FlatStyle = FlatStyle.Flat,
+            ForeColor = Color.White,
+            BackColor = Color.FromArgb(80, 80, 80),
+            Font = new Font("Segoe UI", 10),
         };
         BtnSalvar.Click += BtnSalvar_Click;
-        if (telaAnterior is ViewTransacao telaTransacao)
-        {
-            telaTransacao.AtualizarNomeUsuario(usuarioLogado.Nome);
-        }
+
         BtnVoltar = new Button
         {
             Text = "Voltar",
-            Location = new Point(190, 150)
+            Location = new Point(280, 370),
+            Size = new Size(100, 40),
+            FlatStyle = FlatStyle.Flat,
+            ForeColor = Color.White,
+            BackColor = Color.FromArgb(80, 80, 80),
+            Font = new Font("Segoe UI", 10),
         };
         BtnVoltar.Click += (s, e) =>
         {
             Hide();
-            new ViewTransacao(usuarioLogado).ShowDialog();
-            
+            telaAnterior.Show();
         };
 
-        Controls.Add(lblNome);
-        Controls.Add(InpNome);
-        Controls.Add(lblEmail);
-        Controls.Add(InpEmail);
-        Controls.Add(lblSenha);
-        Controls.Add(InpSenha);
+       
+        groupBox.Controls.Add(lblNome);
+        groupBox.Controls.Add(InpNome);
+        groupBox.Controls.Add(lblEmail);
+        groupBox.Controls.Add(InpEmail);
+        groupBox.Controls.Add(lblSenha);
+        groupBox.Controls.Add(InpSenha);
+
+        
+        Controls.Add(titulo);
+        Controls.Add(groupBox);
         Controls.Add(BtnSalvar);
         Controls.Add(BtnVoltar);
     }
@@ -115,7 +146,12 @@ public class ViewEditarConta : Form
         }
 
         RepositoryUsuario.Atualizar(usuario);
-        MessageBox.Show("Dados atualizados!");
+        MessageBox.Show("Dados atualizados com sucesso!");
+
+        if (telaAnterior is ViewTransacao transacaoForm)
+        {
+            transacaoForm.AtualizarNomeUsuario(usuario.Nome);
+        }
         new ViewTransacao(usuario).ShowDialog();
         Close();
     }

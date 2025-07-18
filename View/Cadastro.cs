@@ -15,92 +15,117 @@ public class ViewCadastro : Form
     public ViewCadastro()
     {
         Text = "Cadastro de Usuário";
-        Size = new Size(350, 300);
+        Size = new Size(700, 500);
         StartPosition = FormStartPosition.CenterScreen;
 
-        int lblWidth = 120;
-        int inputWidth = 180;
-        int startX = 20;
-        int labelY = 20;
-        int spacingY = 40;
+        var titulo = new Label
+        {
+            Text = "Crie sua Conta",
+            Font = new Font("Segoe UI", 24, FontStyle.Bold),
+            Location = new Point(30, 30),
+            AutoSize = true
+        };
 
-        Label lblNome = new()
+        GroupBox groupBox = new GroupBox
+        {
+            Text = "Informações do Usuário",
+            Font = new Font("Segoe UI", 15, FontStyle.Italic),
+            Size = new Size(450, 280),
+            Location = new Point(120, 100),
+            BackColor = Color.LightGray,
+        };
+
+        var lblNome = new Label
         {
             Text = "Nome:",
-            Location = new Point(startX, labelY),
-            Width = lblWidth
+            Location = new Point(30, 40),
+            Font = new Font("Segoe UI", 12),
+            AutoSize = true
         };
         InpNome = new TextBox
         {
-            Location = new Point(startX + lblWidth, labelY),
-            Width = inputWidth
+            Location = new Point(170, 40),
+            Size = new Size(220, 25),
+            Font = new Font("Segoe UI", 11),
+            BorderStyle = BorderStyle.None
         };
 
-        Label lblEmail = new()
+        var lblEmail = new Label
         {
             Text = "Email:",
-            Location = new Point(startX, labelY + spacingY),
-            Width = lblWidth
+            Location = new Point(30, 80),
+            Font = new Font("Segoe UI", 12),
+            AutoSize = true
         };
         InpEmail = new TextBox
         {
-            Location = new Point(startX + lblWidth, labelY + spacingY),
-            Width = inputWidth
+            Location = new Point(170, 80),
+            Size = new Size(220, 25),
+            Font = new Font("Segoe UI", 11),
+            BorderStyle = BorderStyle.None
         };
 
-
-        Label lblSenha = new()
+        var lblSenha = new Label
         {
             Text = "Senha:",
-            Location = new Point(startX, labelY + spacingY * 2),
-            Width = lblWidth
+            Location = new Point(30, 120),
+            Font = new Font("Segoe UI", 12),
+            AutoSize = true
         };
         InpSenha = new TextBox
         {
-            Location = new Point(startX + lblWidth, labelY + spacingY * 2),
-            Width = inputWidth,
+            Location = new Point(170, 120),
+            Size = new Size(220, 25),
+            Font = new Font("Segoe UI", 11),
+            BorderStyle = BorderStyle.None,
             PasswordChar = '*'
         };
 
-        Label lblConfirmar = new()
+        var lblConfirmar = new Label
         {
             Text = "Confirmar Senha:",
-            Location = new Point(startX, labelY + spacingY * 3),
-            Width = lblWidth
+            Location = new Point(30, 160),
+            Font = new Font("Segoe UI", 12),
+            AutoSize = true
         };
         InpConfirmarSenha = new TextBox
         {
-            Location = new Point(startX + lblWidth, labelY + spacingY * 3),
-            Width = inputWidth,
+            Location = new Point(170, 160),
+            Size = new Size(220, 25),
+            Font = new Font("Segoe UI", 11),
+            BorderStyle = BorderStyle.None,
             PasswordChar = '*'
         };
 
         BtnCadastrar = new Button
         {
             Text = "Cadastrar",
-            Location = new Point(startX + lblWidth, labelY + spacingY * 4)
+            Location = new Point(170, 210),
+            Size = new Size(100, 35),
+            FlatStyle = FlatStyle.Flat,
+            ForeColor = Color.White,
+            BackColor = Color.FromArgb(80, 80, 80),
+            Font = new Font("Segoe UI", 10),
         };
         BtnCadastrar.Click += BtnCadastrar_Click;
 
         BtnVoltar = new Button
         {
             Text = "Voltar",
-            Location = new Point(startX + lblWidth + 90, labelY + spacingY * 4)
+            Location = new Point(290, 210),
+            Size = new Size(100, 35),
+            FlatStyle = FlatStyle.Flat,
+            ForeColor = Color.White,
+            BackColor = Color.FromArgb(80, 80, 80),
+            Font = new Font("Segoe UI", 10),
         };
         BtnVoltar.Click += (s, e) =>
         {
             Hide();
             new ViewLogin().ShowDialog();
         };
-        GroupBox groupBox = new GroupBox
-        {
-            Font = new Font("Segoe UI", 15, FontStyle.Italic),
-            Size = new Size(350, 300),
-            Location = new Point(120, 100),
-            BackColor = Color.LightGray,
 
-        };
-
+        // Adiciona controles ao GroupBox
         groupBox.Controls.Add(lblNome);
         groupBox.Controls.Add(InpNome);
         groupBox.Controls.Add(lblEmail);
@@ -109,14 +134,19 @@ public class ViewCadastro : Form
         groupBox.Controls.Add(InpSenha);
         groupBox.Controls.Add(lblConfirmar);
         groupBox.Controls.Add(InpConfirmarSenha);
-        Controls.Add(BtnCadastrar);
-        Controls.Add(BtnVoltar);
+        groupBox.Controls.Add(BtnCadastrar);
+        groupBox.Controls.Add(BtnVoltar);
+
+        // Adiciona ao Form
+        Controls.Add(titulo);
+        Controls.Add(groupBox);
     }
 
     private void BtnCadastrar_Click(object? sender, EventArgs e)
     {
-        // Validações
-        if (string.IsNullOrWhiteSpace(InpNome.Text) || string.IsNullOrWhiteSpace(InpEmail.Text) || string.IsNullOrWhiteSpace(InpSenha.Text))
+        if (string.IsNullOrWhiteSpace(InpNome.Text) ||
+            string.IsNullOrWhiteSpace(InpEmail.Text) ||
+            string.IsNullOrWhiteSpace(InpSenha.Text))
         {
             MessageBox.Show("Preencha todos os campos.");
             return;
@@ -128,12 +158,11 @@ public class ViewCadastro : Form
             return;
         }
 
-        // Criar novo usuário
-        var novoUsuario = Usuario.CriarComSenhaSegura(InpNome.Text, InpEmail.Text, InpSenha.Text);
+        var usuario = Usuario.CriarComSenhaSegura(InpNome.Text, InpEmail.Text, InpSenha.Text);
+        RepositoryUsuario.Registrar(usuario);
+        MessageBox.Show("Cadastro realizado com sucesso!");
 
-        RepositoryUsuario.Registrar(novoUsuario);
-        MessageBox.Show("Usuário cadastrado com sucesso!");
         Hide();
-        new ViewLogin().ShowDialog(); // Fecha a janela
+        new ViewLogin().ShowDialog();
     }
 }
